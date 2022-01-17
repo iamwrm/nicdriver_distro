@@ -3,14 +3,22 @@ name: ci
 on: push
 
 jobs:
-  build_docker_image:
+  prepare_qemu:
     runs-on: ubuntu-20.04
-
     steps:
       - uses: actions/checkout@v2
+            
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
+
       - run: |
           uname -a
           cat /etc/*release
+
 
   use_container:
     runs-on: ubuntu-latest
